@@ -1,0 +1,14 @@
+services:
+  cockroach:
+    image: localhost/cockroachdb
+    
+    container_name: CockroachDB
+    hostname: CockroachDB
+
+    volumes:
+      - ./cockroach/:/space/db/
+
+    ports:
+      - 8080:8080
+
+    command: cockroach start --insecure --store=data --http-addr=0.0.0.0:8080 --listen-addr=localhost:9080 --join=localhost:9080
