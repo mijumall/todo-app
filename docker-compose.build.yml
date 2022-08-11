@@ -1,13 +1,21 @@
 services:
   cockroach:
     build:
-      context: ./build/cockroach
-      dockerfile: Dockerfile
+      context: ./build/cockroach/
       x-bake:
         tags:
           - localhost/cockroachdb
         platforms:
           - linux/amd64 
+
+  gin:
+    build:
+      context: ./build/gin/
+      x-bake:
+        tags:
+          - localhost/gin
+        platforms:
+           - linux/arm64
         
 # docker buildx create --use --name mybuilder 
 # docker buildx bake -f docker-compose.build.yml
