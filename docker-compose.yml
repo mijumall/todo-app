@@ -20,3 +20,12 @@ services:
       - 8002:8002
     command: go run .
 
+  svelte:
+    image: localhost/svelte
+    container_name: svelte
+    hostname: svelte
+    volumes:
+      - ./svelte/:/space/app/
+    ports:
+      - 8001:8001
+    command: npm run dev

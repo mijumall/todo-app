@@ -1,3 +1,4 @@
 data/
 *.tgz
+*.tar*
 tmp/
