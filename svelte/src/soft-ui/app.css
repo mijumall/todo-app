@@ -1,7 +1,6 @@
-html, body {
+body {
   color: white;
   background-color: #2a292e;
   font-size: 20px;
   font-family: sans-serif;
-  overscroll-behavior-y: unset;
 }

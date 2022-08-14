@@ -1,9 +1,9 @@
 <script lang="ts">
-  console.log("Hi")
+  import MainPage from './lib/MainPage.svelte';
 </script>
 
 <main>
-  Hi
+  <MainPage/>
 </main>
 
 <style lang="scss">
