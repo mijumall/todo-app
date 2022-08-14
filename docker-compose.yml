@@ -1,4 +1,5 @@
 services:
+  # Production
   cockroach:
     image: localhost/cockroachdb
     container_name: CockroachDB
@@ -9,15 +10,44 @@ services:
       - 8080:8080
     command: cockroach start --insecure --store=path=data,size=10GB --http-addr=0.0.0.0:8080 --listen-addr=0.0.0.0:9080 --join=localhost:9080 
 
+  caddy:
+    image: localhost/caddy
+    container_name: caddy
+    hostname: caddy
+    ports:
+      - 80:80
+      - 443:443
+      - 8002:8002
+    command: caddy run
+
+  frontend:
+    image: localhost/frontend
+    container_name: frontend
+    hostname: frontend
+    command: caddy run
+
+  apiserver:
+    image: localhost/apiserver
+    container_name: apiserver
+    hostname: apiserver
+    depends_on:
+      - cockroach
+    restart: always
+    command: ./example
+
+  # Dev
   gin:
     image: localhost/gin
     container_name: gin
     hostname: gin
+    environment:
+      - GOOS=linux
+      - GOARCH=amd64
     volumes:
       - ./gin/:/space/work/
     ports:
       - 6060:6060
-      - 8002:8002
+      - 8012:8002
     command: go run .
 
   svelte:
@@ -27,5 +57,5 @@ services:
     volumes:
       - ./svelte/:/space/app/
     ports:
-      - 8001:8001
+      - 8011:8001
     command: npm run dev

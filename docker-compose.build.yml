@@ -1,4 +1,5 @@
 services:
+  # Production
   cockroach:
     build:
       context: ./build/cockroach/
@@ -8,6 +9,34 @@ services:
         platforms:
           - linux/amd64 
 
+  caddy:
+    build:
+      context: ./build/caddy/
+      x-bake:
+        tags:
+          - localhost/caddy
+        platforms:
+          - linux/amd64
+
+  frontend:
+    build:
+      context: ./build/frontend/
+      x-bake:
+        tags:
+          - localhost/frontend
+        platforms:
+          - linux/amd64
+
+  apiserver:
+    build:
+      context: ./build/apiserver/
+      x-bake:
+        tags:
+          - localhost/apiserver
+        platforms:
+          - linux/amd64
+
+  # Dev
   gin:
     build:
       context: ./build/gin/

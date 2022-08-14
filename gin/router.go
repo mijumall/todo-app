@@ -11,7 +11,10 @@ func runRouter(conn *pgx.Conn) {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:8001"},
+		AllowOrigins: []string{
+			"http://localhost:8001",
+			"https://localhost",
+		},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
 	}))
 
