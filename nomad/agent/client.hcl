@@ -3,7 +3,7 @@ data_dir = "/home/normal/space/data/"
 region = "Tokyo"
 datacenter = "Moon"
 
-bind_addr = "192.168.189.230"
+bind_addr = "0.0.0.0"
 
 addresses {
 	http = "localhost"
@@ -23,7 +23,7 @@ client {
 	enabled = true
 	servers = ["192.168.155.98"]
 
-	host_volume "sample-v" {
+	host_volume "v" {
 		path = "/home/normal/space/v"
 	}
 }

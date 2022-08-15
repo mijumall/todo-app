@@ -3,7 +3,7 @@ data_dir = "/home/normal/space/data/"
 region = "Tokyo"
 datacenter = "Moon"
 
-bind_addr = "192.168.155.207"
+bind_addr = "0.0.0.0"
 
 addresses {
 	http = "localhost"
@@ -19,9 +19,10 @@ ports {
 	serf = 4648
 }
 
-client {
+server {
 	enabled = true
-	servers = ["192.168.155.98"]
+	bootstrap_expect = 1
 }
 
 log_level = "INFO"
+
