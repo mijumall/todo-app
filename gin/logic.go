@@ -15,8 +15,15 @@ func rootHandler(c *gin.Context) {
 	})
 }
 
-func readHandler(c *gin.Context, conn *pgx.Conn) {
+func readHandler(c *gin.Context) {
 	var data []Data
+
+	conn, err := pgx.Connect(context.Background(), URL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+		return
+	}
+	defer conn.Close(context.Background())
 
 	sql := `SELECT id, content, created_at FROM todo`
 	rows, err := conn.Query(context.Background(), sql)
@@ -34,7 +41,14 @@ func readHandler(c *gin.Context, conn *pgx.Conn) {
 	c.IndentedJSON(http.StatusOK, data)
 }
 
-func addHandler(c *gin.Context, conn *pgx.Conn) {
+func addHandler(c *gin.Context) {
+	conn, err := pgx.Connect(context.Background(), URL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+		return
+	}
+	defer conn.Close(context.Background())
+
 	// Body will be: {"content": "Some todo text"}
 	var body map[string]string
 	if err := c.BindJSON(&body); err != nil {
@@ -57,11 +71,18 @@ func addHandler(c *gin.Context, conn *pgx.Conn) {
 	})
 }
 
-func deleteHandler(c *gin.Context, conn *pgx.Conn) {
+func deleteHandler(c *gin.Context) {
+	conn, err := pgx.Connect(context.Background(), URL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+		return
+	}
+	defer conn.Close(context.Background())
+
 	id := c.Query("id")
 
 	sql := `DELETE FROM todo WHERE id = $1`
-	_, err := conn.Exec(context.Background(), sql, id)
+	_, err = conn.Exec(context.Background(), sql, id)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"result": false,

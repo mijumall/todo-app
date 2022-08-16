@@ -1,7 +1,7 @@
 services:
   # Production
   cockroach:
-    image: localhost/cockroachdb
+    image: anchorboard/todo-cockroachdb
     container_name: CockroachDB
     hostname: CockroachDB
     volumes:
@@ -11,7 +11,7 @@ services:
     command: cockroach start --insecure --store=path=data,size=10GB --http-addr=0.0.0.0:8080 --listen-addr=0.0.0.0:9080 --join=localhost:9080 
 
   caddy:
-    image: localhost/caddy
+    image: anchorboard/todo-caddy
     container_name: caddy
     hostname: caddy
     ports:
@@ -21,13 +21,13 @@ services:
     command: caddy run
 
   frontend:
-    image: localhost/frontend
+    image: anchorboard/todo-frontend
     container_name: frontend
     hostname: frontend
     command: caddy run
 
   apiserver:
-    image: localhost/apiserver
+    image: anchorboard/todo-apiserver
     container_name: apiserver
     hostname: apiserver
     depends_on:
@@ -37,7 +37,7 @@ services:
 
   # Dev
   gin:
-    image: localhost/gin
+    image: anchorboard/todo-gin
     container_name: gin
     hostname: gin
     environment:
@@ -51,7 +51,7 @@ services:
     command: go run .
 
   svelte:
-    image: localhost/svelte
+    image: anchorboard/todo-svelte
     container_name: svelte
     hostname: svelte
     volumes:

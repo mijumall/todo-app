@@ -5,36 +5,59 @@ services:
       context: ./build/cockroach/
       x-bake:
         tags:
-          - localhost/cockroachdb
+          - anchorboard/todo-cockroachdb
         platforms:
           - linux/amd64 
+        cache-from:
+          - type=registry,ref=anchorboard/todo-cockroach:cache
+        cache-to:
+          - type=registry,ref=anchorboard/todo-cockroach:cache,mode=max
+        output: type=registry
+
 
   caddy:
     build:
       context: ./build/caddy/
       x-bake:
         tags:
-          - localhost/caddy
+          - anchorboard/todo-caddy
         platforms:
           - linux/amd64
+        cache-from:
+          - type=registry,ref=anchorboard/todo-caddy:cache
+        cache-to:
+          - type=registry,ref=anchorboard/todo-caddy:cache,mode=max
+        output: type=registry
+
 
   frontend:
     build:
       context: ./build/frontend/
       x-bake:
         tags:
-          - localhost/frontend
+          - anchorboard/todo-frontend
         platforms:
           - linux/amd64
+        cache-from:
+          - type=registry,ref=anchorboard/todo-frontend:cache
+        cache-to:
+          - type=registry,ref=anchorboard/todo-frontend:cache,mode=max
+        output: type=registry
+
 
   apiserver:
     build:
       context: ./build/apiserver/
       x-bake:
         tags:
-          - localhost/apiserver
+          - anchorboard/todo-apiserver
         platforms:
           - linux/amd64
+        cache-from:
+          - type=registry,ref=anchorboard/todo-apiserver:cache
+        cache-to:
+          - type=registry,ref=anchorboard/todo-apiserver:cache,mode=max
+        output: type=registry
 
   # Dev
   gin:
@@ -42,19 +65,27 @@ services:
       context: ./build/gin/
       x-bake:
         tags:
-          - localhost/gin
+          - anchorboard/todo-gin
         platforms:
           - linux/arm64
+        cache-from:
+          - type=registry,ref=anchorboard/todo-gin:cache
+        cache-to:
+          - type=registry,ref=anchorboard/todo-gin:cache,mode=max
   
   svelte:
     build:
       context: ./build/svelte/
       x-bake:
         tags:
-          - localhost/svelte
+          - anchorboard/todo-svelte
         platforms:
           - linux/arm64
+        cache-from:
+          - type=registry,ref=anchorboard/todo-svelte:cache
+        cache-to:
+          - type=registry,ref=anchorboard/todo-svelte:cache,mode=max
 
         
 # docker buildx create --use --name mybuilder 
-# docker buildx bake -f docker-compose.build.yml
+# docker buildx bake -f docker-compose.build.yml --load
