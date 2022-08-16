@@ -5,7 +5,7 @@ services:
       context: ./build/cockroach/
       x-bake:
         tags:
-          - anchorboard/todo-cockroachdb
+          - anchorboard/todo-cockroachdb:latest
         platforms:
           - linux/amd64 
         cache-from:
@@ -20,7 +20,7 @@ services:
       context: ./build/caddy/
       x-bake:
         tags:
-          - anchorboard/todo-caddy
+          - anchorboard/todo-caddy:latest
         platforms:
           - linux/amd64
         cache-from:
@@ -35,7 +35,7 @@ services:
       context: ./build/frontend/
       x-bake:
         tags:
-          - anchorboard/todo-frontend
+          - anchorboard/todo-frontend:latest
         platforms:
           - linux/amd64
         cache-from:
@@ -50,7 +50,7 @@ services:
       context: ./build/apiserver/
       x-bake:
         tags:
-          - anchorboard/todo-apiserver
+          - anchorboard/todo-apiserver:latest
         platforms:
           - linux/amd64
         cache-from:
@@ -65,7 +65,7 @@ services:
       context: ./build/gin/
       x-bake:
         tags:
-          - anchorboard/todo-gin
+          - anchorboard/todo-gin:latest
         platforms:
           - linux/arm64
         cache-from:
@@ -78,7 +78,7 @@ services:
       context: ./build/svelte/
       x-bake:
         tags:
-          - anchorboard/todo-svelte
+          - anchorboard/todo-svelte:latest
         platforms:
           - linux/arm64
         cache-from:
