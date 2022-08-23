@@ -1,6 +1,0 @@
-http://localhost:8001 {
-	encode zstd gzip
-	
-	root dist/
-	file_server
-}

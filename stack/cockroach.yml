@@ -1,0 +1,96 @@
+version: "3.8"
+
+
+services:
+  crdb-1:
+    image: anchorboard/todo-cockroachdb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      placement:
+        constraints:
+          - node.labels.crdb-1==true
+    volumes:
+      - /home/normal/space:/space/db
+    ports:
+      - target: 28000
+        published: 28000
+        mode: host
+    networks:
+      - cockroach_net
+    command: [
+      "cockroach", "start", 
+      "--insecure",
+      "--store=path=/space/db,size=5GB",
+      "--http-addr=0.0.0.0:28000",
+      "--listen-addr=0.0.0.0:29000", 
+      "--advertise-addr=crdb-1:29000",
+      "--join=crdb-1:29000,crdb-2:29000,crdb-3:29000"
+    ]
+
+
+  crdb-2:
+    image: anchorboard/todo-cockroachdb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      placement:
+        constraints:
+          - node.labels.crdb-2==true
+    volumes:
+      - /home/normal/space:/space/db
+    ports:
+      - target: 28000
+        published: 28000
+        mode: host
+    networks:
+      - cockroach_net
+    command: [
+      "cockroach", "start", 
+      "--insecure",
+      "--store=path=/space/db,size=5GB",
+      "--http-addr=0.0.0.0:28000",
+      "--listen-addr=0.0.0.0:29000", 
+      "--advertise-addr=crdb-2:29000",
+      "--join=crdb-1:29000,crdb-2:29000,crdb-3:29000"
+    ]
+
+  crdb-3:
+    image: anchorboard/todo-cockroachdb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      placement:
+        constraints:
+          - node.labels.crdb-3==true
+    volumes:
+      - /home/normal/space:/space/db
+    ports:
+      - target: 28000
+        published: 28000
+        mode: host
+    networks:
+      - cockroach_net
+    command: [
+      "cockroach", "start", 
+      "--insecure",
+      "--store=path=/space/db,size=5GB",
+      "--http-addr=0.0.0.0:28000",
+      "--listen-addr=0.0.0.0:29000", 
+      "--advertise-addr=crdb-3:29000",
+      "--join=crdb-1:29000,crdb-2:29000,crdb-3:29000"
+    ]
+
+
+networks:
+  cockroach_net:
+    driver: overlay

@@ -1,41 +1,22 @@
 services:
-  # Production
   cockroach:
     image: anchorboard/todo-cockroachdb
     container_name: CockroachDB
     hostname: CockroachDB
     volumes:
-      - ./cockroach/:/space/db/
+      - ./cockroach/data/:/space/db/
     ports:
-      - 8080:8080
-    command: cockroach start --insecure --store=path=data,size=10GB --http-addr=0.0.0.0:8080 --listen-addr=0.0.0.0:9080 --join=localhost:9080 
+      - 28000:28000
+    command: [
+      "cockroach", "start", 
+      "--insecure",
+      "--store=path=/space/db,size=10GB",
+      "--http-addr=0.0.0.0:28000",
+      "--listen-addr=0.0.0.0:29000", 
+      "--advertise-addr=cockroach:29000", 
+      "--join=cockroach:29000"
+    ]
 
-  caddy:
-    image: anchorboard/todo-caddy
-    container_name: caddy
-    hostname: caddy
-    ports:
-      - 80:80
-      - 443:443
-      - 8002:8002
-    command: caddy run
-
-  frontend:
-    image: anchorboard/todo-frontend
-    container_name: frontend
-    hostname: frontend
-    command: caddy run
-
-  apiserver:
-    image: anchorboard/todo-apiserver
-    container_name: apiserver
-    hostname: apiserver
-    depends_on:
-      - cockroach
-    restart: always
-    command: ./example
-
-  # Dev
   gin:
     image: anchorboard/todo-gin
     container_name: gin
@@ -43,12 +24,13 @@ services:
     environment:
       - GOOS=linux
       - GOARCH=amd64
+      - MODE=dev
     volumes:
       - ./gin/:/space/work/
     ports:
       - 6060:6060
-      - 8012:8002
-    command: go run .
+      - 8002:8002
+    command: air
 
   svelte:
     image: anchorboard/todo-svelte
@@ -57,5 +39,5 @@ services:
     volumes:
       - ./svelte/:/space/app/
     ports:
-      - 8011:8001
+      - 8001:8001
     command: npm run dev

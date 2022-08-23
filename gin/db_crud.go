@@ -8,8 +8,6 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-const URL = "postgres://root@cockroach:9080/app"
-
 func Read(conn *pgx.Conn) (Data, error) {
 	tx, err := conn.Begin(context.Background())
 	if err != nil {

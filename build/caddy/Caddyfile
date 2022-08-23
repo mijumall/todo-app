@@ -1,14 +1,20 @@
-http://localhost:80 {
-	redir https://localhost:443{url}
+{
+	storage file_system {
+		root /space/storage
+	}
 }
 
-https://localhost:443 {
+http://todo.anchorboard.net {
+	redir https://todo.anchorboard.net{url}
+}
+
+https://todo.anchorboard.net {
 	reverse_proxy http://frontend:8001 {
 		lb_policy least_conn
 	}
 }
 
-http://localhost:8002 {
+https://todo-api.anchorboard.net {
 	reverse_proxy http://apiserver:8002 {
 		lb_policy least_conn
 	}

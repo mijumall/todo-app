@@ -15,7 +15,7 @@ services:
         output: type=registry
 
 
-  caddy:
+  caddy-server:
     build:
       context: ./build/caddy/
       x-bake:

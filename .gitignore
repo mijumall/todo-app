@@ -4,3 +4,4 @@ data/
 tmp/
 example
 build/frontend/dist/
+file-server

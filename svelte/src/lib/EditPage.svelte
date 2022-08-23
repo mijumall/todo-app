@@ -2,6 +2,7 @@
 	import { isEditmode} from './store/editmode';
 	import SizedBox from './SizedBox.svelte';
 	import { updateData } from './logic/updateData';
+	import { api_host } from './store/api_host';
 
 	let content: string = '';
 
@@ -12,7 +13,7 @@
 	const addHandler = async () => {
 		isEditmode.set(false);
 
-		const url = "http://localhost:8002/add"
+		const url = `${api_host}/add`
 		const response = await fetch(url, {
 			method: 'POST',
 			body: `{"content": "${content}"}`,

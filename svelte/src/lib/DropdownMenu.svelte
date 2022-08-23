@@ -2,6 +2,7 @@
 	import Icon from './Icon.svelte';
 	import SizedBox from './SizedBox.svelte';
 	import { itemData } from './store/itemData';
+	import { api_host } from './store/api_host';
 
 	export let top: number = 0;
 	export let left: number = 0;
@@ -22,8 +23,8 @@
 
 	// Delete content 
 	async function deleteItem() {
-		const url = `http://localhost:8002/delete?id=${id}`;
-		const response = await fetch(url, {method: 'DELETE'});
+		const url = `${api_host}/delete?id=${id}`;
+		const response = await fetch(url, {method: 'POST'});
 		if (response.status >= 200 && response.status < 300) {
 			// Remove local corresponding item data
 			let copyItemData = $itemData;

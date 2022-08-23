@@ -1,0 +1,63 @@
+version: "3.8"
+
+
+services:
+  caddy-server:
+    image: anchorboard/todo-caddy
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      placement:
+        constraints:
+          - node.labels.caddy-server==true
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /home/normal/space:/space/storage
+    networks:
+      - frontend_net
+      - backend_net
+    command: caddy run
+
+  frontend:
+    image: anchorboard/todo-frontend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      placement:
+        constraints:
+          - node.labels.stateless==true
+    networks:
+      - frontend_net
+    command: ./file-server 0.0.0.0:8001 /space/dist/
+
+  apiserver:
+    image: anchorboard/todo-apiserver
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      placement:
+        constraints:
+          - node.labels.stateless==true
+    networks:
+      - backend_net
+      - cockroach_net
+    command: ./example
+
+
+networks:
+  frontend_net:
+    driver: overlay
+
+  backend_net:
+    driver: overlay
